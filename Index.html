@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Generate ISA Report PDF</title>
+</head>
+<body style="font-family: Arial; padding: 20px;">
+
+<h3>Generate ISA Report</h3>
+
+<label for="gid">Paste GlobalID:</label><br><br>
+<input id="gid" type="text" style="width:300px; padding:8px;" /><br><br>
+
+<button onclick="generatePDF()" 
+        style="padding:10px 20px; background:#0066cc; color:white; border:none; cursor:pointer;">
+    Generate PDF
+</button>
+
+<script>
+function generatePDF() {
+    var gid = document.getElementById('gid').value;
+    if (!gid) {
+        alert("Please enter a GlobalID.");
+        return;
+    }
+
+    // Replace this with your actual Power Automate HTTP URL
+    var url = "YOUR_FLOW_URL_HERE";
+
+    fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ "GlobalID": gid })
+    })
+    .then(response => response.blob())
+    .then(blob => {
+        var pdfURL = URL.createObjectURL(blob);
+        window.open(pdfURL, "_blank");
+    })
+    .catch(err => alert("Error: " + err));
+}
+</script>
+
+</body>
+</html>
